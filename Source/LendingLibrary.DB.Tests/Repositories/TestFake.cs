@@ -9,14 +9,10 @@ namespace LendingLibrary.DB.Tests.Repositories
         public void FakeTest()
         {
             //---------------Set up test pack-------------------
-            
             //---------------Assert Precondition----------------
-
             //---------------Execute Test ----------------------
-            Assert.AreEqual(1,1);
+            Assert.AreEqual(1, 1);
             //---------------Test Result -----------------------
-
         }
-
     }
 }
