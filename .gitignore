@@ -13,5 +13,3 @@ source/coverage
 buildreports
 source/.vs/config/applicationhost.config
 source/OpenCover/
-*.ncrunchproject
-*.ncrunchsolution
