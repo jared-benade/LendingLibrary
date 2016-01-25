@@ -11,6 +11,14 @@ namespace LendingLibrary.DB
 
     public class LendingLibraryDbContext : DbContext, ILendingLibraryDbContext
     {
+        public LendingLibraryDbContext() : this("DefaultConnection")
+        {
+        }
+
+        public LendingLibraryDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
         public LendingLibraryDbContext(DbConnection connection) : base(connection, true)
         {
         }

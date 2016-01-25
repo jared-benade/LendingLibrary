@@ -2,7 +2,7 @@
 
 namespace LendingLibrary.Core.Interfaces.Repositories
 {
-    public interface IRepository<T>
+    public interface IRepository<T> 
     {
         void Save(T entry);
         List<T> GetAll();

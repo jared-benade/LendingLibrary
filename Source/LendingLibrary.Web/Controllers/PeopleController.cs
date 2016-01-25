@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using LendingLibrary.Core.Domain;
 using LendingLibrary.Core.Interfaces.Repositories;
+using LendingLibrary.Web.Models;
 
 namespace LendingLibrary.Web.Controllers
 {
@@ -22,10 +24,13 @@ namespace LendingLibrary.Web.Controllers
             _personRepository = personRepository;
         }
 
-//        public ActionResult Index()
-//        {
-//            return View(db.People.ToList());
-//        }
+        public ActionResult Index()
+        {
+            var people = _personRepository.GetAll();
+            var personViewModels = new List<PersonViewModel>();
+            if (people != null) personViewModels = _mappingEngine.Map<List<Person>, List<PersonViewModel>>(people);
+            return View(personViewModels);
+        }
 //
 //        public ActionResult Details(int? id)
 //        {
