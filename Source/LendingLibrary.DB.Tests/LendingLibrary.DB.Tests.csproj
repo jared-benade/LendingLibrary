@@ -42,6 +42,10 @@
       <HintPath>..\packages\FluentMigrator.1.6.1\lib\40\FluentMigrator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentMigrator.Runner, Version=1.6.1.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentMigrator.Runner.1.6.1\lib\40\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
     <Reference Include="NSubstitute, Version=1.9.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.1.9.2.0\lib\net45\NSubstitute.dll</HintPath>
       <Private>True</Private>
