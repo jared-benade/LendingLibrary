@@ -1,6 +1,8 @@
-﻿namespace LendingLibrary.Core.Domain
+﻿using LendingLibrary.Core.Interfaces;
+
+namespace LendingLibrary.Core.Domain
 {
-    public class Person
+    public class Person : IEntity
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

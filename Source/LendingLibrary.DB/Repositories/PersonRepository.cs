@@ -18,7 +18,7 @@ namespace LendingLibrary.DB.Repositories
 
         public void Save(Person entity)
         {
-            _dbContext.People.Add(entity);
+            _dbContext.Upsert(entity);
             _dbContext.SaveChanges();
         }
 

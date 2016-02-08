@@ -15,8 +15,8 @@ namespace LendingLibrary.Web.Controllers
 
         public PeopleController(IMappingEngine mappingEngine, IPersonRepository personRepository)
         {
-            if (mappingEngine == null) throw new ArgumentNullException("mappingEngine");
-            if (personRepository == null) throw new ArgumentNullException("personRepository");
+            if (mappingEngine == null) throw new ArgumentNullException(nameof(mappingEngine));
+            if (personRepository == null) throw new ArgumentNullException(nameof(personRepository));
             _mappingEngine = mappingEngine;
             _personRepository = personRepository;
         }
@@ -28,21 +28,7 @@ namespace LendingLibrary.Web.Controllers
             if (people != null) personViewModels = _mappingEngine.Map<List<Person>, List<PersonViewModel>>(people);
             return View(personViewModels);
         }
-//
-//        public ActionResult Details(int? id)
-//        {
-//            if (id == null)
-//            {
-//                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-//            }
-//            var person = db.People.Find(id);
-//            if (person == null)
-//            {
-//                return HttpNotFound();
-//            }
-//            return View(person);
-//        }
-//
+
         public ActionResult Create()
         {
             return View();
@@ -75,6 +61,8 @@ namespace LendingLibrary.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var person = _mappingEngine.Map<PersonViewModel, Person>(viewModel);
+                _personRepository.Save(person);
                 return RedirectToAction("Index", "People");
             }
             return View(viewModel);

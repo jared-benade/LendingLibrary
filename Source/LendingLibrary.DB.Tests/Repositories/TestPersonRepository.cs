@@ -112,6 +112,29 @@ namespace LendingLibrary.DB.Tests.Repositories
         }
 
         [Test]
+        public void Save_GivenExistingPerson_ShouldUpdate()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var existingPerson = PersonBuilder.BuildRandom();
+                ctx.People.Add(existingPerson);
+                ctx.SaveChanges();
+                var updatedPerson = new PersonBuilder().WithRandomProps().WithId(existingPerson.Id).Build();
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                personRepository.Save(updatedPerson);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(1, ctx.People.Count());
+                var personInDb = ctx.People.FirstOrDefault();
+                Assert.IsNotNull(personInDb);
+                Assert.AreEqual(updatedPerson.Id, personInDb.Id);
+                Assert.AreEqual(updatedPerson.FirstName, personInDb.FirstName);
+            }
+        }
+
+        [Test]
         public void GetById_GivenNoPeopleInDbContext_ShouldReturnNull()
         {
             using (var ctx = GetContext())

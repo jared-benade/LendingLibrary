@@ -21,15 +21,15 @@ namespace LendingLibrary.Web.Tests.Controllers
     {
         private WindsorContainer _windsorContainer;
 
-        [TestFixtureSetUp]
-        public void TestSetUpFixture()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
             _windsorContainer = new WindsorContainer();
             _windsorContainer.Install(new AutoMapperInstaller());
         }
 
-        [TestFixtureTearDown]
-        public void TestFixtureTearDown()
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
             _windsorContainer = null;
         }
@@ -280,14 +280,28 @@ namespace LendingLibrary.Web.Tests.Controllers
             Assert.AreEqual("People", result.RouteValues["controller"]);
         }
 
-        [Ignore("blah")]
+        [Test]
+        public void EditPost_GivenPersonViewModel_ShouldMapOnMappingEngine()
+        {
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var mappingEngine = Substitute.For<IMappingEngine>();
+            var controller = CreateControllerBuilder().WithMappingEngine(mappingEngine).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(viewModel); 
+            //---------------Test Result -----------------------
+            mappingEngine.Received().Map<PersonViewModel, Person>(viewModel);
+        }
+
         [Test]
         public void EditPost_GivenPersonViewModel_ShouldCallSaveOnPersonRepository()
         {
             //---------------Set up test pack-------------------
             var viewModel = PersonViewModelBuilder.BuildRandom();
             var personRepository = Substitute.For<IPersonRepository>();
-            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).Build();
+            var mappingEngine = _windsorContainer.Resolve<IMappingEngine>();
+            var controller = CreateControllerBuilder().WithMappingEngine(mappingEngine).WithPersonRepository(personRepository).Build();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var result = controller.Edit(viewModel);
