@@ -47,7 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PeanutButter.FluentMigrator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PeanutButter.FluentMigrator.1.1.0\lib\net40\PeanutButter.FluentMigrator.dll</HintPath>
+      <HintPath>..\packages\PeanutButter.FluentMigrator.1.1.29\lib\net40\PeanutButter.FluentMigrator.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="DataConstants\Tables.cs" />
     <Compile Include="DBMigrationRunner.cs" />
+    <Compile Include="Migrations\_201601291531_CreatePersonTable.cs" />
+    <Compile Include="Migrations\_201601291528_DeletePersonTable.cs" />
     <Compile Include="Migrations\_201601221631_CreatePersonTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,7 +8,7 @@
 
             public class Columns
             {
-                public const string PERSONID = "PersonId";
+                public const string ID = "Id";
                 public const string FIRSTNAME = "FirstName";
                 public const string LASTNAME = "LastName";
                 public const string CONTACTNUMBER = "ContactNumber";

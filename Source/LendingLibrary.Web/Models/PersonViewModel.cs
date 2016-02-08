@@ -6,7 +6,7 @@ namespace LendingLibrary.Web.Models
 {
     public class PersonViewModel
     {
-        public int PersonId { get; set; }
+        public int Id { get; set; }
         [DisplayName("First Name")]
         public string FirstName { get; set; }
         [DisplayName("Last Name")]

@@ -7,6 +7,7 @@ namespace LendingLibrary.DB
     public interface ILendingLibraryDbContext
     {
         DbSet<Person> People { get; set; }
+        int SaveChanges();
     }
 
     public class LendingLibraryDbContext : DbContext, ILendingLibraryDbContext

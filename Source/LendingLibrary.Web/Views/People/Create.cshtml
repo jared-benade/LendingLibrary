@@ -1,4 +1,4 @@
-﻿@model LendingLibrary.Core.Domain.Person
+﻿@model LendingLibrary.Web.Models.PersonViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -10,7 +10,6 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
         <h4>Person</h4>
         <hr />

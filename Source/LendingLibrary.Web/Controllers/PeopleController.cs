@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using AutoMapper;
 using LendingLibrary.Core.Domain;
@@ -46,51 +43,42 @@ namespace LendingLibrary.Web.Controllers
 //            return View(person);
 //        }
 //
-//        public ActionResult Create()
-//        {
-//            return View();
-//        }
-//
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Create(Person person)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                db.People.Add(person);
-//                db.SaveChanges();
-//                return RedirectToAction("Index");
-//            }
-//
-//            return View(person);
-//        }
-//
-//        public ActionResult Edit(int? id)
-//        {
-//            if (id == null)
-//            {
-//                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-//            }
-//            var person = db.People.Find(id);
-//            if (person == null)
-//            {
-//                return HttpNotFound();
-//            }
-//            return View(person);
-//        }
-//
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult Edit(Person person)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                db.Entry(person).State = EntityState.Modified;
-//                db.SaveChanges();
-//                return RedirectToAction("Index");
-//            }
-//            return View(person);
-//        }
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(PersonViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var person = _mappingEngine.Map<PersonViewModel, Person>(viewModel);
+                _personRepository.Save(person);
+                return RedirectToAction("Index");
+            }
+
+            return View(viewModel);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var person = _personRepository.GetById(id);
+            var viewModel = _mappingEngine.Map<Person, PersonViewModel>(person);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PersonViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "People");
+            }
+            return View(viewModel);
+        }
 //
 //        public ActionResult Delete(int? id)
 //        {

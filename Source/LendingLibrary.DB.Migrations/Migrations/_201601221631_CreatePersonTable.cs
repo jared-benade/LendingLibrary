@@ -10,7 +10,7 @@ namespace LendingLibrary.DB.Migrations.Migrations
         public override void Up()
         {
             Create.Table(_Table.NAME)
-                .WithColumn(_Columns.PERSONID).AsInt32().PrimaryKey()
+                .WithColumn(_Columns.ID).AsInt32().PrimaryKey()
                 .WithColumn(_Columns.FIRSTNAME).AsString().NotNullable()
                 .WithColumn(_Columns.LASTNAME).AsString().NotNullable()
                 .WithColumn(_Columns.CONTACTNUMBER).AsString()

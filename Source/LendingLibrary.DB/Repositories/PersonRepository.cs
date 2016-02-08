@@ -8,27 +8,29 @@ namespace LendingLibrary.DB.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
-        private ILendingLibraryDbContext dbContext;
+        private readonly ILendingLibraryDbContext _dbContext;
 
         public PersonRepository(ILendingLibraryDbContext dbContext) 
         {
             if (dbContext == null) throw new ArgumentNullException("dbContext");
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
         }
 
-        public void Save(Person entry)
+        public void Save(Person entity)
         {
-            throw new NotImplementedException();
+            _dbContext.People.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         public List<Person> GetAll()
         {
-            return dbContext.People.ToList();
+            return _dbContext.People.ToList();
         }
 
-        public Person GetById(string id)
+        public Person GetById(int id)
         {
-            throw new NotImplementedException();
+            var person = _dbContext.People.AsQueryable().FirstOrDefault(x => x.Id == id);
+            return person;
         }
 
         public void DeleteById(string id)

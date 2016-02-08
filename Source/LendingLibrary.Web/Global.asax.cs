@@ -30,7 +30,7 @@ namespace LendingLibrary.Web
 
         private void MigrateDatabaseWith(string connectionString)
         {
-            var runner = new DBMigrationsRunner(connectionString);
+            var runner = new Migrator(connectionString);
             runner.MigrateToLatest();
         }
 

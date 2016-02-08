@@ -6,11 +6,13 @@ using Castle.Windsor;
 using LendingLibrary.Core.Domain;
 using LendingLibrary.Core.Interfaces.Repositories;
 using LendingLibrary.Tests.Common.Builders;
+using LendingLibrary.Tests.Common.Builders.Controller;
 using LendingLibrary.Web.Bootstrappers.Ioc.Installers;
 using LendingLibrary.Web.Controllers;
 using LendingLibrary.Web.Models;
 using NSubstitute;
 using NUnit.Framework;
+using PeanutButter.RandomGenerators;
 
 namespace LendingLibrary.Web.Tests.Controllers
 {
@@ -38,7 +40,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             //---------------Set up test pack-------------------
             //---------------Assert Precondition----------------
             //--------------Execute Test -----------------------
-            Assert.DoesNotThrow(() => CreatePeopleController());
+            Assert.DoesNotThrow(() => CreateControllerBuilder().Build());
             //---------------Test Result -----------------------
         }
 
@@ -48,7 +50,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             //---------------Set up test pack-------------------
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var ex = Assert.Throws<ArgumentNullException>(() => CreatePeopleController((IMappingEngine)null));
+            var ex = Assert.Throws<ArgumentNullException>(() => CreateControllerBuilder().WithMappingEngine(null).Build());
             //---------------Test Result -----------------------
             Assert.IsNotNull(ex);
             Assert.AreEqual("mappingEngine",ex.ParamName);
@@ -61,7 +63,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             var mappingEngine = Substitute.For<IMappingEngine>();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var ex = Assert.Throws<ArgumentNullException>(() => CreatePeopleController(mappingEngine, null));
+            var ex = Assert.Throws<ArgumentNullException>(() => CreateControllerBuilder().WithPersonRepository(null).Build());
             //---------------Test Result -----------------------
             Assert.IsNotNull(ex);
             Assert.AreEqual("personRepository", ex.ParamName);
@@ -71,7 +73,7 @@ namespace LendingLibrary.Web.Tests.Controllers
         public void Index_ShouldReturnView()
         {
             //---------------Set up test pack-------------------
-            var controller = CreatePeopleController();
+            var controller = CreateControllerBuilder().Build();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var result = controller.Index() as ViewResult;
@@ -84,7 +86,7 @@ namespace LendingLibrary.Web.Tests.Controllers
         {
             //---------------Set up test pack-------------------
             var personRepository = Substitute.For<IPersonRepository>();
-            var controller = CreatePeopleController(personRepository);
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).Build();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var result = controller.Index() as ViewResult;
@@ -93,7 +95,7 @@ namespace LendingLibrary.Web.Tests.Controllers
         }
 
         [Test]
-        public void Index_GivenPeopleReturnedFromPeopleRepo_ShouldCallMappingEngine()
+        public void Index_GivenPeopleReturnedFromPeopleRepo_ShouldCallMapOnMappingEngine()
         {
             //---------------Set up test pack-------------------
             var person = PersonBuilder.BuildRandom();
@@ -101,7 +103,8 @@ namespace LendingLibrary.Web.Tests.Controllers
             var personRepository = Substitute.For<IPersonRepository>();
             personRepository.GetAll().Returns(people);
             var mappingEngine = Substitute.For<IMappingEngine>();
-            var controller = CreatePeopleController(mappingEngine,personRepository);
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository)
+                            .WithMappingEngine(mappingEngine).Build();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var result = controller.Index() as ViewResult;
@@ -118,7 +121,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             var personRepository = Substitute.For<IPersonRepository>();
             personRepository.GetAll().Returns(people);
             var mappingEngine = _windsorContainer.Resolve<IMappingEngine>();
-            var controller = CreatePeopleController(mappingEngine,personRepository);
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).WithMappingEngine(mappingEngine).Build();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var result = controller.Index() as ViewResult;
@@ -129,25 +132,173 @@ namespace LendingLibrary.Web.Tests.Controllers
             Assert.IsInstanceOf<List<PersonViewModel>>(viewModels);
         }
 
-
-        private PeopleController CreatePeopleController()
+        [Test]
+        public void Create_ShouldReturnView()
         {
-            return new PeopleController(Substitute.For<IMappingEngine>(), Substitute.For<IPersonRepository>());  
+            //---------------Set up test pack-------------------
+            var controller = CreateControllerBuilder().Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Create();
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
         }
 
-        private static PeopleController CreatePeopleController(IMappingEngine mappingEngine)
+        [Test]
+        public void CreatePost_GivenModelStateErrors_ShouldReturnViewWithViewModel()
         {
-            return new PeopleController(mappingEngine, Substitute.For<IPersonRepository>());
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var controller = CreateControllerBuilder().Build();
+            controller.ModelState.AddModelError("Error","I am an error, fear me");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Create(viewModel) as ViewResult;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
         }
 
-        private static PeopleController CreatePeopleController(IMappingEngine mappingEngine, IPersonRepository personRepo)
+        [Test]
+        public void CreatePost_GivenNoModelStateErrors_ShouldCallMapOnMappingEngine()
         {
-            return new PeopleController(mappingEngine, personRepo);
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var mappingEngine = Substitute.For<IMappingEngine>();
+            var controller = CreateControllerBuilder().WithMappingEngine(mappingEngine).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Create(viewModel) as ViewResult;
+            //---------------Test Result -----------------------
+            mappingEngine.Received().Map<PersonViewModel, Person>(viewModel);
         }
 
-        private static PeopleController CreatePeopleController(IPersonRepository personRepo)
+        [Test]
+        public void CreatePost_GivenNoModelStateErrors_ShouldCallSaveOnPersonRepository()
         {
-            return new PeopleController(Substitute.For<IMappingEngine>(), personRepo);
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var mappingEngine = _windsorContainer.Resolve<IMappingEngine>();
+            var personRepository = Substitute.For<IPersonRepository>();
+            var controller = CreateControllerBuilder().WithMappingEngine(mappingEngine).WithPersonRepository(personRepository).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Create(viewModel) as ViewResult;
+            //---------------Test Result -----------------------
+            personRepository.Received().Save(Arg.Any<Person>());
+        }
+
+        [Test]
+        public void Edit_ShouldReturnView()
+        {
+            //---------------Set up test pack-------------------
+            var id = RandomValueGen.GetRandomInt();
+            var controller = CreateControllerBuilder().Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(id) as ViewResult;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void Edit_GivenId_ShouldCallGetByIdOnPersonRepository()
+        {
+            //---------------Set up test pack-------------------
+            var id = RandomValueGen.GetRandomInt();
+            var personRepository = Substitute.For<IPersonRepository>();
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(id) as ViewResult;
+            //---------------Test Result -----------------------
+            personRepository.Received().GetById(id);
+        }
+
+        [Test]
+        public void Edit_GivenPersonReturnedFromRepo_ShouldCallMapIdOnMappingEngine()
+        {
+            //---------------Set up test pack-------------------
+            var person = PersonBuilder.BuildRandom();
+            var id = person.Id;
+            var personRepository = Substitute.For<IPersonRepository>();
+            personRepository.GetById(id).Returns(person);
+            var mappingEngine = Substitute.For<IMappingEngine>();
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).WithMappingEngine(mappingEngine).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(id) as ViewResult;
+            //---------------Test Result -----------------------
+            mappingEngine.Received().Map<Person, PersonViewModel>(person);
+        }
+
+        [Test]
+        public void Edit_GivenSuccessfulCallToMap_ShouldReturnViewWithViewModel()
+        {
+            //---------------Set up test pack-------------------
+            var person = PersonBuilder.BuildRandom();
+            var id = person.Id;
+            var personRepository = Substitute.For<IPersonRepository>();
+            personRepository.GetById(id).Returns(person);
+            var mappingEngine = _windsorContainer.Resolve<IMappingEngine>();
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).WithMappingEngine(mappingEngine).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(id) as ViewResult;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+            var viewModel = result.Model as PersonViewModel;
+            Assert.IsNotNull(viewModel);
+            Assert.AreEqual(person.Id, viewModel.Id);
+        }
+
+        [Test]
+        public void EditPost_GivenModelStateErrors_ShouldReturnViewWithViewModel()
+        {
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var controller = CreateControllerBuilder().Build();
+            controller.ModelState.AddModelError("Error","Yet another error");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(viewModel) as ViewResult;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+        }
+        
+        [Test]
+        public void EditPost_GivenNoModelStateErrors_ShouldReturnRedirectAction()
+        {
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var controller = CreateControllerBuilder().Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(viewModel) as RedirectToRouteResult;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+            Assert.AreEqual("People", result.RouteValues["controller"]);
+        }
+
+        [Ignore("blah")]
+        [Test]
+        public void EditPost_GivenPersonViewModel_ShouldCallSaveOnPersonRepository()
+        {
+            //---------------Set up test pack-------------------
+            var viewModel = PersonViewModelBuilder.BuildRandom();
+            var personRepository = Substitute.For<IPersonRepository>();
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = controller.Edit(viewModel);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(result);
+            personRepository.Received().Save(Arg.Any<Person>());
+        }
+
+        private static PeopleControllerBuilder CreateControllerBuilder()
+        {
+            return new PeopleControllerBuilder();
         }
     }
 }

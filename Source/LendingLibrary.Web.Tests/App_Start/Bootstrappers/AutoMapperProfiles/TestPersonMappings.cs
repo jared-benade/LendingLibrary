@@ -16,19 +16,19 @@ namespace LendingLibrary.Web.Tests.Bootstrappers.AutoMapperProfiles
         private IWindsorContainer _container;
         private readonly WindsorTestHelpers _windsorTestHelpers = new WindsorTestHelpers();
 
-        [TestFixtureSetUp]
-        public void FixtureSetup()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
             _container = _windsorTestHelpers.CreateContainerWith(new AutoMapperInstaller());
         }
 
-        [TestFixtureTearDown]
-        public void FixtureTearDown()
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
             if (_container != null) _container.Dispose();
         }
 
-        [TestCase("PersonId")]
+        [TestCase("Id")]
         [TestCase("FirstName")]
         [TestCase("LastName")]
         [TestCase("ContactNumber")]
@@ -45,7 +45,7 @@ namespace LendingLibrary.Web.Tests.Bootstrappers.AutoMapperProfiles
             PropertyAssert.AreEqual(src, dst, propertyName);
         }
 
-        [TestCase("PersonId")]
+        [TestCase("Id")]
         [TestCase("FirstName")]
         [TestCase("LastName")]
         [TestCase("ContactNumber")]

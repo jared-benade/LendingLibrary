@@ -4,9 +4,9 @@ namespace LendingLibrary.Core.Interfaces.Repositories
 {
     public interface IRepository<T> 
     {
-        void Save(T entry);
+        void Save(T entity);
         List<T> GetAll();
-        T GetById(string id);
+        T GetById(int id);
         void DeleteById(string id);
     }
 }

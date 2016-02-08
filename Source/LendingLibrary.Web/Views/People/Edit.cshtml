@@ -1,4 +1,4 @@
-﻿@model LendingLibrary.Core.Domain.Person
+﻿@model LendingLibrary.Web.Models.PersonViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -15,7 +15,7 @@
         <h4>Person</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PersonId)
+        @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })

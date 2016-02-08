@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
-using LendingLibrary.Core.Domain;
 using LendingLibrary.DB.Migrations;
 using LendingLibrary.DB.Repositories;
 using LendingLibrary.Tests.Common.Builders;
 using NSubstitute;
 using NUnit.Framework;
-using PeanutButter.FluentMigrator;
+using PeanutButter.RandomGenerators;
 using PeanutButter.TestUtils.Entity;
 using PeanutButter.Utils.Entity;
 
@@ -15,9 +14,11 @@ namespace LendingLibrary.DB.Tests.Repositories
     [TestFixture]
     public class TestPersonRepository : EntityPersistenceTestFixtureBase<LendingLibraryDbContext>
     {
-        [TestFixtureSetUp]
-        public void TestFixtureSetup()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()   
         {
+            Configure(true, connectionString => new Migrator(connectionString));
+            RunBeforeFirstGettingContext(Clear); 
             DisableDatabaseRegeneration();
         }
 
@@ -46,11 +47,9 @@ namespace LendingLibrary.DB.Tests.Repositories
         [Test]
         public void GetAll_GivenNoPeopleInDbContext_ShouldReturnEmptyList()
         {
-            Configure(true, connectionString => new DBMigrationsRunner(connectionString));
             using (var ctx = GetContext())
             {
                 //---------------Set up test pack-------------------
-                Clear(ctx);
                 var personRepository = CreatePersonRepository(ctx);
                 //---------------Assert Precondition----------------
                 //---------------Execute Test ----------------------
@@ -63,11 +62,9 @@ namespace LendingLibrary.DB.Tests.Repositories
         [Test]
         public void GetAll_GivenPeopleInDbContext_ShouldReturnListOfPeople()
         {
-            Configure(true, connectionString => new DBMigrationsRunner(connectionString));
             using (var ctx = GetContext())
             {
                 //---------------Set up test pack-------------------
-                Clear(ctx);
                 var person = PersonBuilder.BuildRandom();
                 ctx.People.Add(person);
                 ctx.SaveChanges();
@@ -81,9 +78,97 @@ namespace LendingLibrary.DB.Tests.Repositories
             }
         }
 
-        private static void Clear(ILendingLibraryDbContext ctx)
+        [Test]
+        public void Save_GivenPerson_ShouldSaveToDbContext()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person = PersonBuilder.BuildRandom();
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                Assert.AreEqual(0, ctx.People.Count());
+                //---------------Execute Test ----------------------
+                personRepository.Save(person);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(1, ctx.People.Count());
+            }
+        }
+
+        [Test]
+        public void Save_GivenPersonIsNull_ShouldThrow()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                Assert.AreEqual(0, ctx.People.Count());
+                //---------------Execute Test ----------------------
+                var ex = Assert.Throws<ArgumentNullException>(() => personRepository.Save(null));
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(ex);
+            }
+        }
+
+        [Test]
+        public void GetById_GivenNoPeopleInDbContext_ShouldReturnNull()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var id = RandomValueGen.GetRandomInt();
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                var returnedPerson = personRepository.GetById(id);
+                //---------------Test Result -----------------------
+                Assert.IsNull(returnedPerson);
+            }
+        }
+
+        [Test]
+        public void GetById_GivenNoMatchingPersonInDbContext_ShouldReturnNull()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person = PersonBuilder.BuildRandom();
+                ctx.People.Add(person);
+                var notMatchingId = RandomValueGen.GetRandomInt();
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                Assert.AreNotEqual(person.Id, notMatchingId);
+                //---------------Execute Test ----------------------
+                var returnedPerson = personRepository.GetById(notMatchingId);
+                //---------------Test Result -----------------------
+                Assert.IsNull(returnedPerson);
+            }
+        }
+
+        [Test]
+        public void GetById_GivenMatchingPersonInDbContext_ShouldReturnThatPerson()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person = PersonBuilder.BuildRandom();
+                ctx.People.Add(person);
+                ctx.SaveChanges();
+                var id = person.Id;
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                var returnedPerson = personRepository.GetById(id);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(person, returnedPerson);
+            }
+        }
+
+        private static void Clear(LendingLibraryDbContext ctx)
         {
             ctx.People.Clear();
+            ctx.SaveChangesWithErrorReporting(); 
         }
 
         private PersonRepository CreatePersonRepository(ILendingLibraryDbContext dbContext)
