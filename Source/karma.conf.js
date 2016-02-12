@@ -18,9 +18,11 @@ module.exports = function(config) {
 	  // 3rd party dependencies
 	  // app specific
 	  // test specific
-	  //'Fortel.OMS.Web.Tests/Scripts/*.js',
+	  'LendingLibrary.Web/js/**/*.js',
       'LendingLibrary.Web.Tests/js/**/*.js',
       'LendingLibrary.Web/Scripts/jquery-1.10.2.js',	 
+      'LendingLibrary.Web/Scripts/sweetalert.min.js',	 
+      'LendingLibrary.Web/Scripts/jquery.redirect.js'	 
     ],
 
 

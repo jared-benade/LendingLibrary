@@ -67,38 +67,11 @@ namespace LendingLibrary.Web.Controllers
             }
             return View(viewModel);
         }
-//
-//        public ActionResult Delete(int? id)
-//        {
-//            if (id == null)
-//            {
-//                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-//            }
-//            var person = db.People.Find(id);
-//            if (person == null)
-//            {
-//                return HttpNotFound();
-//            }
-//            return View(person);
-//        }
-//
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public ActionResult DeleteConfirmed(int id)
-//        {
-//            var person = db.People.Find(id);
-//            db.People.Remove(person);
-//            db.SaveChanges();
-//            return RedirectToAction("Index");
-//        }
-//
-//        protected override void Dispose(bool disposing)
-//        {
-//            if (disposing)
-//            {
-//                db.Dispose();
-//            }
-//            base.Dispose(disposing);
-//        }
+
+        public JsonResult Delete(int id)
+        {
+            if(id != 0) _personRepository.DeleteById(id);
+            return Json("",JsonRequestBehavior.AllowGet);
+        }
     }
 }

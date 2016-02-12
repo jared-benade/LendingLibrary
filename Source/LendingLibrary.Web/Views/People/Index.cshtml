@@ -41,10 +41,29 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <div style="float: right">
+                <button onclick="deletePerson(@item.Id)">Delete</button>
+            </div>
+            <div style="float: right; margin-right: 10px">
+                @using (Html.BeginForm("Edit"))
+                {
+                    <input type="hidden" name="Id" id="Id" value="@item.Id"/>
+                    <button>Edit</button>
+                }
+            </div>
+
         </td>
     </tr>
 }
 
 </table>
+
+@section scripts{
+    <script>
+        function deletePerson(id) {
+            var deleteUrl = '@Url.Action("Delete")';
+            var refreshUrl = '@Url.Action("Index")';
+            LendingLibrary.People.Index.deletePerson(id, deleteUrl, refreshUrl);
+        }
+    </script>
+}

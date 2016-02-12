@@ -33,9 +33,12 @@ namespace LendingLibrary.DB.Repositories
             return person;
         }
 
-        public void DeleteById(string id)
+        public void DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var person = GetById(id);
+            if (person == null) return;
+            _dbContext.People.Remove(person);
+            _dbContext.SaveChanges();
         }
     }
 }

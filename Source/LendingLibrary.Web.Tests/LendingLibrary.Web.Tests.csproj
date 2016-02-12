@@ -129,6 +129,7 @@
   <ItemGroup>
     <Content Include="GenericBuilderTests-ExampleUsage.cs.txt" />
     <Content Include="js\Fake\fake.specs.js" />
+    <Content Include="js\People\index.specs.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

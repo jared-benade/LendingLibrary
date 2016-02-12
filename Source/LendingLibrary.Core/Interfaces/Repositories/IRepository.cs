@@ -7,6 +7,6 @@ namespace LendingLibrary.Core.Interfaces.Repositories
         void Save(T entity);
         List<T> GetAll();
         T GetById(int id);
-        void DeleteById(string id);
+        void DeleteById(int id);
     }
 }

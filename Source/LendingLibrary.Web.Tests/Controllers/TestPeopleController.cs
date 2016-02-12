@@ -8,7 +8,6 @@ using LendingLibrary.Core.Interfaces.Repositories;
 using LendingLibrary.Tests.Common.Builders;
 using LendingLibrary.Tests.Common.Builders.Controller;
 using LendingLibrary.Web.Bootstrappers.Ioc.Installers;
-using LendingLibrary.Web.Controllers;
 using LendingLibrary.Web.Models;
 using NSubstitute;
 using NUnit.Framework;
@@ -310,6 +309,47 @@ namespace LendingLibrary.Web.Tests.Controllers
             personRepository.Received().Save(Arg.Any<Person>());
         }
 
+        [Test]
+        public void Delete_ShouldReturnJsonResult()
+        {
+            //---------------Set up test pack-------------------
+            var id = RandomValueGen.GetRandomInt();
+            var controller = CreateControllerBuilder().Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var jsonResult = controller.Delete(id) as JsonResult;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(jsonResult);
+        }
+
+        [Test]
+        public void Delete_GivenIdIsNotEqualToZero_ShouldCallDeleteByIdOnPersonRepo()
+        {
+            //---------------Set up test pack-------------------
+            var id = RandomValueGen.GetRandomInt(1);
+            var personRepository = Substitute.For<IPersonRepository>();
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var jsonResult = controller.Delete(id);
+            //---------------Test Result -----------------------
+            personRepository.Received().DeleteById(id);
+        }
+
+        [Test]
+        public void Delete_GivenIdIsEqualToZero_ShouldNotCallDeleteByIdOnPersonRepo()
+        {
+            //---------------Set up test pack-------------------
+            const int id = 0;
+            var personRepository = Substitute.For<IPersonRepository>();
+            var controller = CreateControllerBuilder().WithPersonRepository(personRepository).Build();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var jsonResult = controller.Delete(id);
+            //---------------Test Result -----------------------
+            personRepository.DidNotReceive().DeleteById(id);
+        }
+        
         private static PeopleControllerBuilder CreateControllerBuilder()
         {
             return new PeopleControllerBuilder();

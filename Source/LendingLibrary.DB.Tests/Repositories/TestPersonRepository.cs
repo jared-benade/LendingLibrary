@@ -188,6 +188,47 @@ namespace LendingLibrary.DB.Tests.Repositories
             }
         }
 
+        [Test]
+        public void DeleteById_GivenMatchingPersonInContext_ShouldRemovePerson()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person = PersonBuilder.BuildRandom();
+                ctx.People.Add(person);
+                ctx.SaveChanges();
+                var id = person.Id;
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                Assert.AreEqual(1, ctx.People.Count());
+                //---------------Execute Test ----------------------
+                personRepository.DeleteById(id);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(0, ctx.People.Count());
+            }
+        }
+
+        [Test]
+        public void DeleteById_GivenNoMatchingPersonInContext_ShouldNotRemoveAnyPeople()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person = PersonBuilder.BuildRandom();
+                ctx.People.Add(person);
+                ctx.SaveChanges();
+                var notMatchingId = person.Id + 1;
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                Assert.AreEqual(1, ctx.People.Count());
+                //---------------Execute Test ----------------------
+                personRepository.DeleteById(notMatchingId);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(1, ctx.People.Count());
+            }
+        }
+
+
         private static void Clear(LendingLibraryDbContext ctx)
         {
             ctx.People.Clear();

@@ -23,8 +23,16 @@ namespace LendingLibrary.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/clientLogic")
+               .IncludeDirectory("~/js", "*.js", true));
+
+            bundles.Add(new ScriptBundle("~/bundles/addonScripts").Include(
+                      "~/Scripts/sweetAlert.min.js",
+                      "~/Scripts/jquery.redirect.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/sweetalert.css",
                       "~/Content/site.css"));
         }
     }
