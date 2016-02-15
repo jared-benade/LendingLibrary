@@ -4,7 +4,7 @@
     {
         public static class Person
         {
-            public const string NAME = "Person";
+            public const string NAME = "People";
 
             public class Columns
             {
@@ -13,6 +13,7 @@
                 public const string LASTNAME = "LastName";
                 public const string CONTACTNUMBER = "ContactNumber";
                 public const string EMAIL = "Email";
+                public const string ISACTIVE = "IsActive";
             }
         }
     }

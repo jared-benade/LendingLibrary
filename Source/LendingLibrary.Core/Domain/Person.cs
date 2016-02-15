@@ -2,9 +2,8 @@
 
 namespace LendingLibrary.Core.Domain
 {
-    public class Person : IEntity
+    public class Person : EntityBase, IEntity
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ContactNumber { get; set; }

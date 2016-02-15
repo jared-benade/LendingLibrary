@@ -4,9 +4,8 @@ using Foolproof;
 
 namespace LendingLibrary.Web.Models
 {
-    public class PersonViewModel
+    public class PersonViewModel : ViewModelBase
     {
-        public int Id { get; set; }
         [DisplayName("First Name")]
         public string FirstName { get; set; }
         [DisplayName("Last Name")]

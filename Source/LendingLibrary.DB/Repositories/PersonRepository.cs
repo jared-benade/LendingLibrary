@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using LendingLibrary.Core.Domain;
@@ -35,10 +36,15 @@ namespace LendingLibrary.DB.Repositories
 
         public void DeleteById(int id)
         {
-            var person = GetById(id);
+            var person = _dbContext.People.FirstOrDefault(x => x.Id == id);
             if (person == null) return;
-            _dbContext.People.Remove(person);
-            _dbContext.SaveChanges();
+            person.IsActive = false;
+            Save(person);
+        }
+
+        public List<Person> GetAllActivePeople()
+        {
+            return _dbContext.People.Where(x => x.IsActive).ToList();
         }
     }
 }

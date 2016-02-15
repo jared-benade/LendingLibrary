@@ -23,7 +23,7 @@ namespace LendingLibrary.Web.Controllers
 
         public ActionResult Index()
         {
-            var people = _personRepository.GetAll();
+            var people = _personRepository.GetAllActivePeople();
             var personViewModels = new List<PersonViewModel>();
             if (people != null) personViewModels = _mappingEngine.Map<List<Person>, List<PersonViewModel>>(people);
             return View(personViewModels);
@@ -41,7 +41,11 @@ namespace LendingLibrary.Web.Controllers
             if (ModelState.IsValid)
             {
                 var person = _mappingEngine.Map<PersonViewModel, Person>(viewModel);
-                _personRepository.Save(person);
+                if (person != null)
+                {
+                    person.IsActive = true;
+                    _personRepository.Save(person);
+                }
                 return RedirectToAction("Index");
             }
 

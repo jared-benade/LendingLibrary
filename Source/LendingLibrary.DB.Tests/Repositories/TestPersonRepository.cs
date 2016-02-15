@@ -158,7 +158,7 @@ namespace LendingLibrary.DB.Tests.Repositories
                 //---------------Set up test pack-------------------
                 var person = PersonBuilder.BuildRandom();
                 ctx.People.Add(person);
-                var notMatchingId = RandomValueGen.GetRandomInt();
+                var notMatchingId = person.Id + 1;
                 var personRepository = CreatePersonRepository(ctx);
                 //---------------Assert Precondition----------------
                 Assert.AreNotEqual(person.Id, notMatchingId);
@@ -189,7 +189,7 @@ namespace LendingLibrary.DB.Tests.Repositories
         }
 
         [Test]
-        public void DeleteById_GivenMatchingPersonInContext_ShouldRemovePerson()
+        public void DeleteById_GivenMatchingPersonInContext_ShouldSoftDeletePerson()
         {
             using (var ctx = GetContext())
             {
@@ -204,17 +204,18 @@ namespace LendingLibrary.DB.Tests.Repositories
                 //---------------Execute Test ----------------------
                 personRepository.DeleteById(id);
                 //---------------Test Result -----------------------
-                Assert.AreEqual(0, ctx.People.Count());
+                Assert.AreEqual(1, ctx.People.Count());
+                Assert.IsFalse(ctx.People.First().IsActive);
             }
         }
 
         [Test]
-        public void DeleteById_GivenNoMatchingPersonInContext_ShouldNotRemoveAnyPeople()
+        public void DeleteById_GivenNoMatchingPersonInContext_ShouldNotSoftDeleteAnyPeople()
         {
             using (var ctx = GetContext())
             {
                 //---------------Set up test pack-------------------
-                var person = PersonBuilder.BuildRandom();
+                var person = new PersonBuilder().WithRandomProps().IsActive().Build();
                 ctx.People.Add(person);
                 ctx.SaveChanges();
                 var notMatchingId = person.Id + 1;
@@ -225,9 +226,52 @@ namespace LendingLibrary.DB.Tests.Repositories
                 personRepository.DeleteById(notMatchingId);
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, ctx.People.Count());
+                Assert.IsTrue(ctx.People.First().IsActive);
             }
         }
 
+        [Test]
+        public void GetAllActivePeople_GivenNoActivePeopleInContext_ShouldReturnEmptyList()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person = new PersonBuilder().WithRandomProps().IsNotActive().Build();
+                ctx.People.Add(person);
+                ctx.SaveChanges();
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                var people = personRepository.GetAllActivePeople();
+                //---------------Test Result -----------------------
+                CollectionAssert.IsEmpty(people);
+            }
+        }
+
+        [Test]
+        public void GetAllActivePeople_GivenActivePeopleInContext_ShouldListOfPeople()
+        {
+            using (var ctx = GetContext())
+            {
+                //---------------Set up test pack-------------------
+                var person1 = new PersonBuilder().WithRandomProps().IsActive().Build();
+                var person2 = new PersonBuilder().WithRandomProps().IsActive().Build();
+                var person3 = new PersonBuilder().WithRandomProps().IsNotActive().Build();
+                ctx.People.Add(person1);
+                ctx.People.Add(person2);
+                ctx.People.Add(person3);
+                ctx.SaveChanges();
+                var personRepository = CreatePersonRepository(ctx);
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                var people = personRepository.GetAllActivePeople();
+                //---------------Test Result -----------------------
+                Assert.AreEqual(2, people.Count);
+                CollectionAssert.Contains(people, person1);
+                CollectionAssert.Contains(people, person2);
+                CollectionAssert.DoesNotContain(people, person3);
+            }
+        }
 
         private static void Clear(LendingLibraryDbContext ctx)
         {

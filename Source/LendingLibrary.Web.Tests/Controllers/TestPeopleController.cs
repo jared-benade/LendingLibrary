@@ -81,7 +81,7 @@ namespace LendingLibrary.Web.Tests.Controllers
         }
 
         [Test]
-        public void Index_ShouldCallGetAllOnPersonRepo()
+        public void Index_ShouldCallGetAllActivePeopleOnPersonRepo()
         {
             //---------------Set up test pack-------------------
             var personRepository = Substitute.For<IPersonRepository>();
@@ -90,7 +90,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             //---------------Execute Test ----------------------
             var result = controller.Index() as ViewResult;
             //---------------Test Result -----------------------
-            personRepository.Received().GetAll();
+            personRepository.Received().GetAllActivePeople();
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             var person = PersonBuilder.BuildRandom();
             var people = new List<Person> {person};
             var personRepository = Substitute.For<IPersonRepository>();
-            personRepository.GetAll().Returns(people);
+            personRepository.GetAllActivePeople().Returns(people);
             var mappingEngine = Substitute.For<IMappingEngine>();
             var controller = CreateControllerBuilder().WithPersonRepository(personRepository)
                             .WithMappingEngine(mappingEngine).Build();

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\EntityBase.cs" />
     <Compile Include="Domain\Item.cs" />
     <Compile Include="Domain\ItemPerson.cs" />
     <Compile Include="Domain\ItemType.cs" />
