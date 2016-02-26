@@ -105,6 +105,7 @@
     <Compile Include="App_Start\Bootstrappers\Ioc\Installers\TestAutoMapperInstaller.cs" />
     <Compile Include="App_Start\Bootstrappers\Ioc\WindsorTestHelpers.cs" />
     <Compile Include="Controllers\TestHomeController.cs" />
+    <Compile Include="Controllers\TestItemsController.cs" />
     <Compile Include="Controllers\TestPeopleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -129,6 +130,7 @@
   <ItemGroup>
     <Content Include="GenericBuilderTests-ExampleUsage.cs.txt" />
     <Content Include="js\Fake\fake.specs.js" />
+    <Content Include="js\Items\index.specs.js" />
     <Content Include="js\People\index.specs.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

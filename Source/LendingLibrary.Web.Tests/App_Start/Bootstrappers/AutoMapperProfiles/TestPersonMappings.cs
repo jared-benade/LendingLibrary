@@ -2,6 +2,7 @@
 using Castle.Windsor;
 using LendingLibrary.Core.Domain;
 using LendingLibrary.Tests.Common.Builders;
+using LendingLibrary.Tests.Common.Builders.ViewModels;
 using LendingLibrary.Web.Bootstrappers.Ioc.Installers;
 using LendingLibrary.Web.Models;
 using LendingLibrary.Web.Tests.Bootstrappers.Ioc;

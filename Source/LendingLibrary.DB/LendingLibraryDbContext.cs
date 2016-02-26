@@ -8,6 +8,8 @@ namespace LendingLibrary.DB
     public interface ILendingLibraryDbContext
     {
         DbSet<Person> People { get; set; }
+        DbSet<Item> Items { get; set; }
+        DbSet<ItemType> ItemTypes { get; set; }
         int SaveChanges();
         void Upsert<TEntity>(TEntity entity) where TEntity : class;
     }
@@ -52,5 +54,7 @@ namespace LendingLibrary.DB
         }
 
         public DbSet<Person> People { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<ItemType> ItemTypes { get; set; }
     }
 }

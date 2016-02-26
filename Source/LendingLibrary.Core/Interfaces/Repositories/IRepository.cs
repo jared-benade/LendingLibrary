@@ -8,5 +8,6 @@ namespace LendingLibrary.Core.Interfaces.Repositories
         List<T> GetAll();
         T GetById(int id);
         void DeleteById(int id);
+        List<T> GetAllActive();
     }
 }

@@ -13,6 +13,14 @@ namespace LendingLibrary.Web.Bootstrappers.Ioc.Installers
             container.Register(Component.For<IPersonRepository>()
                 .ImplementedBy<PersonRepository>()
                 .LifestylePerWebRequest());
+
+            container.Register(Component.For<IItemRepository>()
+                .ImplementedBy<ItemRepository>()
+                .LifestylePerWebRequest());
+
+            container.Register(Component.For<IItemTypeRepository>()
+                .ImplementedBy<ItemTypeRepository>()
+                .LifestylePerWebRequest());
         }
     }
 }

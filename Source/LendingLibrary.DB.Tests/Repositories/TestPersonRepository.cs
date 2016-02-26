@@ -242,7 +242,7 @@ namespace LendingLibrary.DB.Tests.Repositories
                 var personRepository = CreatePersonRepository(ctx);
                 //---------------Assert Precondition----------------
                 //---------------Execute Test ----------------------
-                var people = personRepository.GetAllActivePeople();
+                var people = personRepository.GetAllActive();
                 //---------------Test Result -----------------------
                 CollectionAssert.IsEmpty(people);
             }
@@ -264,7 +264,7 @@ namespace LendingLibrary.DB.Tests.Repositories
                 var personRepository = CreatePersonRepository(ctx);
                 //---------------Assert Precondition----------------
                 //---------------Execute Test ----------------------
-                var people = personRepository.GetAllActivePeople();
+                var people = personRepository.GetAllActive();
                 //---------------Test Result -----------------------
                 Assert.AreEqual(2, people.Count);
                 CollectionAssert.Contains(people, person1);

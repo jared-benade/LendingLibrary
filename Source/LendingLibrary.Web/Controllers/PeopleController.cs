@@ -23,7 +23,7 @@ namespace LendingLibrary.Web.Controllers
 
         public ActionResult Index()
         {
-            var people = _personRepository.GetAllActivePeople();
+            var people = _personRepository.GetAllActive();
             var personViewModels = new List<PersonViewModel>();
             if (people != null) personViewModels = _mappingEngine.Map<List<Person>, List<PersonViewModel>>(people);
             return View(personViewModels);

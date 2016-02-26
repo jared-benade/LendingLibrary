@@ -7,6 +7,7 @@ using LendingLibrary.Core.Domain;
 using LendingLibrary.Core.Interfaces.Repositories;
 using LendingLibrary.Tests.Common.Builders;
 using LendingLibrary.Tests.Common.Builders.Controller;
+using LendingLibrary.Tests.Common.Builders.ViewModels;
 using LendingLibrary.Web.Bootstrappers.Ioc.Installers;
 using LendingLibrary.Web.Models;
 using NSubstitute;
@@ -90,7 +91,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             //---------------Execute Test ----------------------
             var result = controller.Index() as ViewResult;
             //---------------Test Result -----------------------
-            personRepository.Received().GetAllActivePeople();
+            personRepository.Received().GetAllActive();
         }
 
         [Test]
@@ -100,7 +101,7 @@ namespace LendingLibrary.Web.Tests.Controllers
             var person = PersonBuilder.BuildRandom();
             var people = new List<Person> {person};
             var personRepository = Substitute.For<IPersonRepository>();
-            personRepository.GetAllActivePeople().Returns(people);
+            personRepository.GetAllActive().Returns(people);
             var mappingEngine = Substitute.For<IMappingEngine>();
             var controller = CreateControllerBuilder().WithPersonRepository(personRepository)
                             .WithMappingEngine(mappingEngine).Build();

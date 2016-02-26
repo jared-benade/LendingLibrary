@@ -2,7 +2,8 @@
 
 namespace LendingLibrary.Core.Interfaces.Repositories
 {
-    public interface IPersonRepository : IRepository<Person>
+    public interface IItemTypeRepository : IRepository<ItemType>
     {
+         
     }
 }

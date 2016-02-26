@@ -125,8 +125,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\Controller\ItemsControllerBuilder.cs" />
     <Compile Include="Builders\Controller\PeopleControllerBuilder.cs" />
-    <Compile Include="Builders\PersonViewModelBuilder.cs" />
+    <Compile Include="Builders\ItemBuilder.cs" />
+    <Compile Include="Builders\ItemTypeBuilder.cs" />
+    <Compile Include="Builders\ViewModels\ItemViewModelBuilder.cs" />
+    <Compile Include="Builders\ViewModels\PersonViewModelBuilder.cs" />
     <Compile Include="Builders\PersonBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

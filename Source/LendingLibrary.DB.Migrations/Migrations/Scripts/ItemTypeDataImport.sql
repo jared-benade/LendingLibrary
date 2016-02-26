@@ -1,0 +1,1 @@
+﻿insert into dbo.ItemTypes (Description, IsActive) VALUES ('DVD', 1),('Game', 1),('Book', 1),('CD', 1),('Record', 1)

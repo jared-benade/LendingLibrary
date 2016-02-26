@@ -52,6 +52,8 @@
     <Compile Include="Domain\ItemType.cs" />
     <Compile Include="Domain\Person.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\Repositories\IItemRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IItemTypeRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPersonRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

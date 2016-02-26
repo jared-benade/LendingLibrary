@@ -1,0 +1,87 @@
+﻿@model IEnumerable<LendingLibrary.Web.Models.ItemViewModel>
+
+@{
+    ViewBag.Title = "Item Management";
+}
+
+<h2>Item Management</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemTypeViewModel.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edition)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Artist)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Available)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemTypeViewModel.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Edition)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Year)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Artist)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Available)
+        </td>
+        <td>
+            <div style="float: right">
+                <button onclick="deleteItem(@item.Id)">Delete</button>
+            </div>
+            <div style="float: right; margin-right: 10px">
+                @using (Html.BeginForm("Edit","Items", FormMethod.Get))
+                {
+                    <input type="hidden" name="Id" id="Id" value="@item.Id" />
+                    <button>Edit</button>
+                }
+            </div>
+        </td>
+    </tr>
+}
+
+</table>
+
+
+@section scripts{
+    <script>
+        function deleteItem(id) {
+            var deleteUrl = '@Url.Action("Delete")';
+            var refreshUrl = '@Url.Action("Index")';
+            LendingLibrary.Items.Index.deleteItem(id, deleteUrl, refreshUrl);
+        }
+    </script>
+}

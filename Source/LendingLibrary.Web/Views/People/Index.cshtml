@@ -45,7 +45,7 @@
                 <button onclick="deletePerson(@item.Id)">Delete</button>
             </div>
             <div style="float: right; margin-right: 10px">
-                @using (Html.BeginForm("Edit"))
+                @using (Html.BeginForm("Edit", "People", FormMethod.Get))
                 {
                     <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                     <button>Edit</button>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using LendingLibrary.Core.Domain;
@@ -42,7 +41,7 @@ namespace LendingLibrary.DB.Repositories
             Save(person);
         }
 
-        public List<Person> GetAllActivePeople()
+        public List<Person> GetAllActive()
         {
             return _dbContext.People.Where(x => x.IsActive).ToList();
         }
