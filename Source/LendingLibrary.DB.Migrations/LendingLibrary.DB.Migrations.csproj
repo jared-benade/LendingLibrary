@@ -64,6 +64,7 @@
     <Compile Include="DataConstants\Tables.cs" />
     <Compile Include="DBMigrationRunner.cs" />
     <EmbeddedResource Include="Migrations\Scripts\ItemTypeDataImport.sql" />
+    <Compile Include="Migrations\_201602261644_CreateLendingTransactionTable.cs" />
     <Compile Include="Migrations\_201602261504_ItemTypeInitialDataImport.cs" />
     <Compile Include="Migrations\_201602151553_CreateItemTable.cs" />
     <Compile Include="Migrations\_201602151550_CreateItemTypeTable.cs" />

@@ -15,8 +15,8 @@ namespace LendingLibrary.Web.Controllers
 
         public PeopleController(IMappingEngine mappingEngine, IPersonRepository personRepository)
         {
-            if (mappingEngine == null) throw new ArgumentNullException(nameof(mappingEngine));
-            if (personRepository == null) throw new ArgumentNullException(nameof(personRepository));
+            if (mappingEngine == null) throw new ArgumentNullException("mappingEngine");
+            if (personRepository == null) throw new ArgumentNullException("personRepository");
             _mappingEngine = mappingEngine;
             _personRepository = personRepository;
         }

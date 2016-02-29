@@ -18,9 +18,9 @@ namespace LendingLibrary.Web.Controllers
         public ItemsController(IItemRepository itemRepository, IMappingEngine mappingEngine,
             IItemTypeRepository itemTypeRepository)
         {
-            if (itemRepository == null) throw new ArgumentNullException(nameof(itemRepository));
-            if (mappingEngine == null) throw new ArgumentNullException(nameof(mappingEngine));
-            if (itemTypeRepository == null) throw new ArgumentNullException(nameof(itemTypeRepository));
+            if (itemRepository == null) throw new ArgumentNullException("itemRepository");
+            if (mappingEngine == null) throw new ArgumentNullException("mappingEngine");
+            if (itemTypeRepository == null) throw new ArgumentNullException("itemTypeRepository");
             _itemRepository = itemRepository;
             _mappingEngine = mappingEngine;
             _itemTypeRepository = itemTypeRepository;

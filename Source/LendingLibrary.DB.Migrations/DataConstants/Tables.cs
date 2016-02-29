@@ -46,5 +46,20 @@
                 public const string ISACTIVE = "IsActive";
             }
         }
+
+        public static class LendingTransaction
+        {
+            public const string NAME = "LendingTransactions";
+
+            public class Columns
+            {
+                public const string ID = "Id";
+                public const string DATEBORROWED = "DateBorrowed";
+                public const string DATERETURNED = "DateReturned";
+                public const string PERSONID = "PersonId";
+                public const string ITEMID = "ItemId";
+                public const string ISACTIVE = "IsActive";
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace LendingLibrary.Core.Domain
 {
-    public class ItemPerson
+    public class LendingTransaction : EntityBase
     {
         public int ItemId { get; set; }
         public virtual Item Item { get; set; }

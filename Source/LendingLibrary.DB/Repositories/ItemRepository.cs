@@ -11,7 +11,7 @@ namespace LendingLibrary.DB.Repositories
         private readonly ILendingLibraryDbContext _dbContext;
         public ItemRepository(ILendingLibraryDbContext dbContext)
         {
-            if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
+            if (dbContext == null) throw new ArgumentNullException("dbContext");
             _dbContext = dbContext;
         }
 

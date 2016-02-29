@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Domain\EntityBase.cs" />
     <Compile Include="Domain\Item.cs" />
-    <Compile Include="Domain\ItemPerson.cs" />
+    <Compile Include="Domain\LendingTransaction.cs" />
     <Compile Include="Domain\ItemType.cs" />
     <Compile Include="Domain\Person.cs" />
     <Compile Include="Interfaces\IEntity.cs" />

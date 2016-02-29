@@ -217,6 +217,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ItemTypeViewModel.cs" />
     <Compile Include="Models\ItemViewModel.cs" />
+    <Compile Include="Models\LendingTransactionViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PersonViewModel.cs" />
     <Compile Include="Models\ViewModelBase.cs" />

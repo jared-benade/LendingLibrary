@@ -12,7 +12,7 @@ namespace LendingLibrary.DB.Repositories
 
         public ItemTypeRepository(ILendingLibraryDbContext dbContext)
         {
-            if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
+            if (dbContext == null) throw new ArgumentNullException("dbContext");
             _dbContext = dbContext;
         }
 
