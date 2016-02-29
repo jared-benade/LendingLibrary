@@ -106,6 +106,7 @@
     <Compile Include="App_Start\Bootstrappers\Ioc\WindsorTestHelpers.cs" />
     <Compile Include="Controllers\TestHomeController.cs" />
     <Compile Include="Controllers\TestItemsController.cs" />
+    <Compile Include="Controllers\TestLendingTransactionController.cs" />
     <Compile Include="Controllers\TestPeopleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

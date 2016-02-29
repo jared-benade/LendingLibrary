@@ -10,6 +10,7 @@ namespace LendingLibrary.DB
         DbSet<Person> People { get; set; }
         DbSet<Item> Items { get; set; }
         DbSet<ItemType> ItemTypes { get; set; }
+        DbSet<LendingTransaction> LendingTransactions { get; set; }
         int SaveChanges();
         void Upsert<TEntity>(TEntity entity) where TEntity : class;
     }
@@ -56,5 +57,6 @@ namespace LendingLibrary.DB
         public DbSet<Person> People { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemType> ItemTypes { get; set; }
+        public DbSet<LendingTransaction> LendingTransactions { get; set; }
     }
 }

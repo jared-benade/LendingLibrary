@@ -231,7 +231,7 @@ namespace LendingLibrary.DB.Tests.Repositories
         }
 
         [Test]
-        public void GetAllActivePeople_GivenNoActivePeopleInContext_ShouldReturnEmptyList()
+        public void GetAllActive_GivenNoActivePeopleInContext_ShouldReturnEmptyList()
         {
             using (var ctx = GetContext())
             {
@@ -249,7 +249,7 @@ namespace LendingLibrary.DB.Tests.Repositories
         }
 
         [Test]
-        public void GetAllActivePeople_GivenActivePeopleInContext_ShouldListOfPeople()
+        public void GetAllActive_GivenActivePeopleInContext_ShouldListOfPeople()
         {
             using (var ctx = GetContext())
             {

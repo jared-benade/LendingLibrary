@@ -1,8 +1,9 @@
 ﻿using System;
+using LendingLibrary.Core.Interfaces;
 
 namespace LendingLibrary.Core.Domain
 {
-    public class LendingTransaction : EntityBase
+    public class LendingTransaction : EntityBase, IEntity
     {
         public int ItemId { get; set; }
         public virtual Item Item { get; set; }

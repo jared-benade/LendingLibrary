@@ -1,0 +1,68 @@
+﻿@using System.Globalization
+@model List<LendingLibrary.Web.Models.LendingTransactionViewModel>
+
+@{
+    ViewBag.Title = "Lending Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Item
+            </th>
+            <th>
+                Item Type
+            </th>
+            <th>
+                Borrower
+            </th>
+            <th>
+                Date Borrowed
+            </th>
+            <th>
+                Date Returned
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.ItemType.Description)
+                </td>
+                <td>
+                    @item.Person.FirstName @item.Person.LastName
+                </td>
+                <td>
+                    @item.DateBorrowed.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.DateReturned.GetValueOrDefault().ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    <div style="float: right">
+                        <button onclick="deleteLendingTransaction(@item.Id)">Delete</button>
+                    </div>
+                    <div style="float: right; margin-right: 10px">
+                        @using (Html.BeginForm("Edit", "LendingTransaction", FormMethod.Get))
+                        {
+                            <input type="hidden" name="Id" id="Id" value="@item.Id"/>
+                            <button>Edit</button>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

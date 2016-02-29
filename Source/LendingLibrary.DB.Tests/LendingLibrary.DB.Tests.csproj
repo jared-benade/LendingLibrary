@@ -100,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\TestItemRepository.cs" />
     <Compile Include="Repositories\TestItemTypeRepository.cs" />
+    <Compile Include="Repositories\TestLendingTransactionRepository.cs" />
     <Compile Include="Repositories\TestPersonRepository.cs" />
   </ItemGroup>
   <ItemGroup>

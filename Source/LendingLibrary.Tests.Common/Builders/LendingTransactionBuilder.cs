@@ -3,24 +3,19 @@ using PeanutButter.RandomGenerators;
 
 namespace LendingLibrary.Tests.Common.Builders
 {
-    public class ItemBuilder : GenericBuilder<ItemBuilder, Item>
+    public class LendingTransactionBuilder : GenericBuilder<LendingTransactionBuilder, LendingTransaction>
     {
-        public ItemBuilder WithItemTypeId(int id)
-        {
-            return WithProp(x => x.ItemTypeId = id);
-        }
-
-        public ItemBuilder IsActive()
+        public LendingTransactionBuilder IsActive()
         {
             return WithProp(x => x.IsActive = true);
         }
 
-        public ItemBuilder IsNotActive()
+        public LendingTransactionBuilder IsNotActive()
         {
             return WithProp(x => x.IsActive = false);
         }
 
-        public ItemBuilder WithId(int id)
+        public LendingTransactionBuilder WithId(int id)
         {
             return WithProp(x => x.Id = id);
         }
