@@ -192,6 +192,7 @@
   <ItemGroup>
     <Compile Include="App_Start\Bootstrappers\AutoMapperProfiles\ItemMappings.cs" />
     <Compile Include="App_Start\Bootstrappers\AutoMapperProfiles\ItemTypeMappings.cs" />
+    <Compile Include="App_Start\Bootstrappers\AutoMapperProfiles\LendingTransactionMappings.cs" />
     <Compile Include="App_Start\Bootstrappers\AutoMapperProfiles\PersonMappings.cs" />
     <Compile Include="App_Start\Bootstrappers\Ioc\Installers\AutoMapperInstaller.cs" />
     <Compile Include="App_Start\Bootstrappers\Ioc\Installers\ControllerInstaller.cs" />

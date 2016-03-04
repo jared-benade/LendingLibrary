@@ -19,5 +19,15 @@ namespace LendingLibrary.Tests.Common.Builders
         {
             return WithProp(x => x.Id = id);
         }
+
+        public LendingTransactionBuilder WithPersonId(int id)
+        {
+            return WithProp(x => x.PersonId = id);
+        }
+
+        public LendingTransactionBuilder WithItemId(int id)
+        {
+            return WithProp(x => x.ItemId = id);
+        }
     }
 }

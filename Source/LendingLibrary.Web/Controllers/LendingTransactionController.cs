@@ -32,5 +32,54 @@ namespace LendingLibrary.Web.Controllers
 
             return View(viewModels);
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(LendingTransactionViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var lendingTransaction = _mappingEngine.Map<LendingTransactionViewModel, LendingTransaction>(viewModel);
+                if (lendingTransaction != null)
+                {
+                    lendingTransaction.IsActive = true;
+                    _lendingTransactionRepository.Save(lendingTransaction);
+                }
+                return RedirectToAction("Index");
+            }
+
+            return View(viewModel);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var lendingTransaction = _lendingTransactionRepository.GetById(id);
+            var viewModel = _mappingEngine.Map<LendingTransaction, LendingTransactionViewModel>(lendingTransaction);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(LendingTransactionViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var lendingTransaction = _mappingEngine.Map<LendingTransactionViewModel, LendingTransaction>(viewModel);
+                _lendingTransactionRepository.Save(lendingTransaction);
+                return RedirectToAction("Index", "LendingTransaction");
+            }
+            return View(viewModel);
+        }
+
+        public JsonResult Delete(int id)
+        {
+            if (id != 0) _lendingTransactionRepository.DeleteById(id);
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
     }
 }

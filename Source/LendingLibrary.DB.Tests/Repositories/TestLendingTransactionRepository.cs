@@ -140,10 +140,17 @@ namespace LendingLibrary.DB.Tests.Repositories
             using (var ctx = GetContext())
             {
                 //---------------Set up test pack-------------------
-                var existingLendingTransaction = LendingTransactionBuilder.BuildRandom();
+                var person = PersonBuilder.BuildRandom();
+                var item = ItemBuilder.BuildRandom();
+                var existingLendingTransaction = new LendingTransactionBuilder().WithRandomProps()
+                                                .WithPersonId(person.Id).WithItemId(item.Id).Build();
                 ctx.LendingTransactions.Add(existingLendingTransaction);
+                ctx.People.Add(person);
+                ctx.Items.Add(item);
                 ctx.SaveChanges();
-                var updatedLendingTransaction = new LendingTransactionBuilder().WithRandomProps().WithId(existingLendingTransaction.Id).Build();
+                var updatedLendingTransaction = new LendingTransactionBuilder().WithRandomProps()
+                                                    .WithId(existingLendingTransaction.Id).WithPersonId(person.Id)
+                                                    .WithItemId(item.Id).Build();
                 var lendingTransactionRepository = CreateRepository(ctx);
                 //---------------Assert Precondition----------------
                 //---------------Execute Test ----------------------
